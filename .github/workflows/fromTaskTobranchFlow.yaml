@@ -39,3 +39,15 @@ jobs:
             -d "{\"body\":\"This branch has been created for this issue. You can view the pull request [here]($GITHUB_SERVER_URL/${{ github.repository }}/pull/${{ env.BRANCH_NAME }}).\"}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/comments"
 
+      - name: Move Labels from Project Card to Issue
+        run: |
+          # Fetch labels from the project card
+          LABELS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/${{ github.event.issue.number }}/labels" | jq -r '.[].name')
+
+          # Apply labels to the issue
+          for label in $LABELS; do
+            curl -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -d "{\"labels\":[\"$label\"]}" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/labels"
+          done
