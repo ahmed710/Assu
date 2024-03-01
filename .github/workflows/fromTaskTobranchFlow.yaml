@@ -42,8 +42,8 @@ jobs:
       - name: Move Labels from Project Card to Issue
         run: |
           # Fetch labels from the project card
-          LABELS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/${{ github.event.issue.number }}/labels" | jq -r '.[].name')
-
+          LABELS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/${{ github.event.issue.number }}/labels" | jq -r '.[] | .name')
+          
           # Apply labels to the issue
           for label in $LABELS; do
             curl -X POST \
