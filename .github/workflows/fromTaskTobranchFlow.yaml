@@ -46,10 +46,10 @@ jobs:
           echo "Card Id: $CARD_ID"
           
           # Fetch the card details using the obtained card ID
-          CARD_RESPONSE=$(curl -L \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }} \
-            https://api.github.com/projects/columns/cards)
+          CARD_RESPONSE=$(curl -s 
+            -H "Accept: application/vnd.github+json" 
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" 
+            "https://api.github.com/projects/columns/cards")
           echo "Card Response:"
           echo "$CARD_RESPONSE"
           
