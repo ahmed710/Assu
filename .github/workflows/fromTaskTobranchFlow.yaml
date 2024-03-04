@@ -43,7 +43,7 @@ jobs:
         run: |
           # Fetch the specific card corresponding to the GitHub issue
           echo "Repository: ${{github.repository}}"
-          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }})
+          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}")
           echo "Card Id: $CARD_ID"
           
           # Fetch the card details using the obtained card ID
