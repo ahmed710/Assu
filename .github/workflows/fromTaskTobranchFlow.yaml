@@ -45,7 +45,7 @@ jobs:
           API_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/${{ github.event.issue.number }}/labels")
           echo "API Response:"
           echo "$API_RESPONSE"
-          LABELS=$(echo "$API_RESPONSE" | jq -r '.[].name')
+          LABELS=$(echo "$API_RESPONSE")
           
           # Apply labels to the issue
           for label in $LABELS; do
