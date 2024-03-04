@@ -52,6 +52,9 @@ jobs:
           PRIORITY=$(echo "$CARD_RESPONSE" | jq -r '.note' | grep -oP 'Priority:\s*\K\S+')
           SIZE=$(echo "$CARD_RESPONSE" | jq -r '.note' | grep -oP 'Size:\s*\K\S+')
           
+          echo "Priority: $PRIORITY"
+          echo "Size: $SIZE"
+          
           # Apply properties as labels to the issue
           curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
