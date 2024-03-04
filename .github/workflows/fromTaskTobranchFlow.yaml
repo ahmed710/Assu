@@ -44,6 +44,7 @@ jobs:
           # Fetch the specific card corresponding to the GitHub issue
           CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/cards" | jq -r '.[0].id')
           
+          # Display the card response before parsing
           CARD_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/$CARD_ID")
           echo "Card Response:"
           echo "$CARD_RESPONSE"
@@ -60,5 +61,3 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -d "{\"labels\":[\"priority:$PRIORITY\",\"size:$SIZE\"]}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/labels"
-          done
-
