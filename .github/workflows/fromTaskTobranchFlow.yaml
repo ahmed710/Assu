@@ -42,23 +42,21 @@ jobs:
       - name: Move Properties to Issue Labels
         run: |
           # Fetch the specific card corresponding to the GitHub issue
-          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/cards" | jq -r '.[0].id')
-          
-          # Display the entire card response
+          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/cards")
+          echo "Card Id:"
+          echo "$CARD_ID"
           CARD_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/$CARD_ID")
           echo "Card Response:"
           echo "$CARD_RESPONSE"
           
-          # Attempt to extract priority and size from the card data
-          PRIORITY=$(echo "$CARD_RESPONSE" | jq -r '.content_url')
-          SIZE=$(echo "$CARD_RESPONSE" | jq -r '.note')
-          
-          echo "Priority: $PRIORITY"
-          echo "Size: $SIZE"
+          # Extract priority and size from the card data
+          PRIORITY=$(echo "$CARD_RESPONSE" | jq -r '.note' | grep -oP 'Priority:\s*\K\S+')
+          SIZE=$(echo "$CARD_RESPONSE" | jq -r '.note' | grep -oP 'Size:\s*\K\S+')
           
           # Apply properties as labels to the issue
           curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -d "{\"labels\":[\"priority:$PRIORITY\",\"size:$SIZE\"]}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/labels"
+          done
 
