@@ -62,3 +62,4 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -d "{\"labels\":[\"priority:$PRIORITY\",\"size:$SIZE\"]}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/labels"
+
