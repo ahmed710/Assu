@@ -39,19 +39,23 @@ jobs:
             -d "{\"body\":\"This branch has been created for this issue. You can view the pull request [here]($GITHUB_SERVER_URL/${{ github.repository }}/pull/${{ env.BRANCH_NAME }}).\"}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/comments"
 
-      - name: Move Labels from Project Card to Issue
+      - name: Move Properties to Issue Labels
         run: |
-          # Fetch labels from the project card
-          API_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/${{ github.event.issue.number }}/labels")
-          echo "API Response:"
-          echo "$API_RESPONSE"
-          LABELS=$(echo "$API_RESPONSE")
+          # Fetch the specific card corresponding to the GitHub issue
+          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/cards" | jq -r '.[0].id')
           
-          # Apply labels to the issue
-          for label in $LABELS; do
-            curl -X POST \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -d "{\"labels\":[\"$label\"]}" \
-              "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/labels"
+          CARD_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/$CARD_ID")
+          echo "Card Response:"
+          echo "$CARD_RESPONSE"
+          
+          # Extract priority and size from the card data
+          PRIORITY=$(echo "$CARD_RESPONSE" | jq -r '.note' | grep -oP 'Priority:\s*\K\S+')
+          SIZE=$(echo "$CARD_RESPONSE" | jq -r '.note' | grep -oP 'Size:\s*\K\S+')
+          
+          # Apply properties as labels to the issue
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -d "{\"labels\":[\"priority:$PRIORITY\",\"size:$SIZE\"]}" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/labels"
           done
 
