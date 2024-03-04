@@ -43,11 +43,11 @@ jobs:
         run: |
           # Fetch the specific card corresponding to the GitHub issue
           echo "Repository: ${{github.repository}}"
-          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}" | jq -r '.number')
+          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.PROJECT_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}" | jq -r '.number')
           echo "Card Id: $CARD_ID"
           
           # Fetch the card details using the obtained card ID
-          CARD_RESPONSE=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/$CARD_ID")
+          CARD_RESPONSE=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PROJECT_TOKEN }}" "https://api.github.com/projects/columns/cards/$CARD_ID")
           echo "Card Response:"
           echo "$CARD_RESPONSE"
           
@@ -60,7 +60,8 @@ jobs:
           
           # Apply properties as labels to the issue
           curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.PROJECT_TOKEN }}" \
             -d "{\"labels\":[\"priority:$PRIORITY\",\"size:$SIZE\"]}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/labels"
+
 
