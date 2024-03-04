@@ -42,7 +42,7 @@ jobs:
       - name: Move Properties to Issue Labels
         run: |
           # Fetch the specific card corresponding to the GitHub issue
-          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}/cards")
+          CARD_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.issue_number }}")
           echo "Card Id:"
           echo "$CARD_ID"
           CARD_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/projects/columns/cards/$CARD_ID")
