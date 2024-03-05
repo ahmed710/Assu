@@ -10,6 +10,10 @@ jobs:
     steps:
       - name: Debug Event
         run: |
+          echo hetha test echo
+          echo "hello world"
+      - name: Debug Event
+        run: |
           echo "Action:${{ github.event.action }}"
           echo "Card: ${{ toJson(github.event.project_card) }}"
       - name: Print GitHub event action
