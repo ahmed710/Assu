@@ -10,12 +10,10 @@ jobs:
     name: Add issue to project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.0.5
+      - name: Add issue to project board
+        uses: actions/add-to-project@v0.0.5
         with:
           # Update project-url to target your project in your profile
           project-url: https://github.com/users/ahmed710/projects/6
           github-token: ${{ secrets.PROJECT_TOKEN }}
-          labeled: bug, needs-triage
-          label-operator: OR
-
-
+          labeled: bug
