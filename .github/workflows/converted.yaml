@@ -8,6 +8,10 @@ jobs:
   converted-card-to-issue:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug Event
+        run: |
+          echo "Action:${{ github.event.action }}"
+          echo "Card: ${{ toJson(github.event.project_card) }}"
       - name: Print GitHub event action
         run: echo "${{ github.event.action }}"
       - name: Print GitHub project card
