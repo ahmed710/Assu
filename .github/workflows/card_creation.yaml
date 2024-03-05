@@ -8,6 +8,15 @@ jobs:
   createCard:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug Information
+        run: |
+          echo "Issue Number: ${{ github.event.issue.number }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Project Token: ${{ secrets.PROJECT_TOKEN }}"
+          echo "Project Location: ahmed710/Assu"
+          echo "Project Name: kanban_broker"
+          echo "Column Name: backlog"
+
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v3
         with:
