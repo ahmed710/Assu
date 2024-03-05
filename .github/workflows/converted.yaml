@@ -1,7 +1,7 @@
 name: Converted card to issue
 
 on:
-  project_card:
+  projects_v2:
     types: [converted]
 
 jobs:
