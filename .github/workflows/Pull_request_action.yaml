@@ -16,12 +16,15 @@ jobs:
       - name: Check if pull request exists
         id: check_pr
         run: |
-          PR_COUNT=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls?head=${{ github.repository_owner }}:${{ github.ref }}&state=open" | jq length)
-          echo "pr_count={$PR_COUNT}" >>$GITHUB_ENV
-          echo ${{ env.pr_count }}
+          # Extract and store the PR count in a variable
+          PR_COUNT=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls?head=${{ github.repository_owner }}:${{ github.ref }}&state=open" | jq '. | length')
+
+          # Echo and store the PR count with a descriptive message
+          echo "Number of open pull requests for this branch: $PR_COUNT"
+          echo "PR_COUNT=$PR_COUNT" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
-        if: ${{ env.pr_count }} == 0
+        if: ${{ steps.check_pr.outputs.PR_COUNT }} == 0
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
