@@ -25,4 +25,4 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           token: ${{ secrets.PROJECT_TOKEN }}
           project-location: ahmed710/projects
-          repository: ahmed710/Assu
+
