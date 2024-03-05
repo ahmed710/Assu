@@ -16,7 +16,7 @@ jobs:
           echo hetha test echo
           echo "hello world"
 
-      - name: github.event.action
+      - name: event
         run: echo "${{github.event.action}}"
 
 
