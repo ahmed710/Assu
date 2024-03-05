@@ -11,12 +11,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Debug Event
-        run: |
-          echo hetha test echo
-          echo "hello world"
-
-      - name: event
+      - name: github.event.action
         run: echo "${{github.event.action}}"
+
+      - name:  github.event.project_card
+        run: echo "${{github.event.project_card}}"
 
 
