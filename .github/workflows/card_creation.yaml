@@ -14,3 +14,6 @@ jobs:
           project-name: kanban_broker
           column-name: backlog
           issue-number: ${{ github.event.issue.number }}
+          token: ${{ secrets.PROJECT_TOKEN }}
+          project-location: ahmed710/Assu
+          repository: ahmed710/Assu
