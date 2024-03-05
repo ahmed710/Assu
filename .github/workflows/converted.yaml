@@ -1,20 +1,21 @@
-name: Converted card to issue
+name: Add bugs to bugs project
 
 on:
-  projects_v2_item:
-    types: [converted]
+  issues:
+    types:
+      - opened
 
 jobs:
-  converted-card-to-issue:
+  add-to-project:
+    name: Add issue to project
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: github.event.action
-        run: echo "${{github.event.action}}"
-
-      - name:  github.event.project_card
-        run: echo "${{github.event.project_card}}"
+      - uses: actions/add-to-project@RELEASE_VERSION
+        with:
+          # Update project-url to target your project in your profile
+          project-url: https://github.com/users/ahmed710/projects/6
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          labeled: bug, needs-triage
+          label-operator: OR
 
 
