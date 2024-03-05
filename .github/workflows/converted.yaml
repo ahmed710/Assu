@@ -17,10 +17,10 @@ jobs:
 
       - name: Create Kanban Card
         run: |
-          ISSUE_TITLE=$(echo "${{ github.event.issue.title }}" | jq -R .)
-          ISSUE_BODY=$(echo "${{ github.event.issue.body }}" | jq -R .)
+          ISSUE_TITLE=$(echo "${{ github.event.issue.title }}")
+          ISSUE_BODY=$(echo "${{ github.event.issue.body }}")
           ISSUE_LABELS=$(echo "${{ toJson(github.event.issue.labels) }}" | jq -c '.[].name' | jq -s .)
-
+          echo $ISSUE_LABELS 
           curl \
             -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
