@@ -1,0 +1,14 @@
+name: Converted card to issue
+
+on:
+  project_card:
+    types: [converted]
+
+jobs:
+  converted-card-to-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: github.event.action
+        run: echo "${{github.event.action}}"
+      - name:  github.event.project_card
+        run: echo "${{github.event.project_card}}"
