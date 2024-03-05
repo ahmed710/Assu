@@ -11,9 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Add issue to project board
-        uses: actions/add-to-project@v0.0.5
-        with:
-          # Update project-url to target your project in your profile
-          project-url: https://github.com/users/ahmed710/projects/6
-          github-token: ${{ secrets.PROJECT_TOKEN }}
-          labeled: bug
+        env:
+          PROJECT_URL: https://api.github.com/projects/6
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.inertia-preview+json" \
+            -d '{"content_id":$ISSUE_NUMBER,"content_type":"Issue"}' \
+            $PROJECT_URL/columns/123/cards
