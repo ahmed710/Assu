@@ -3,6 +3,7 @@ name: from issue to card
 on:
   issues:
     types: [opened]
+
 jobs:
   createCard:
     runs-on: ubuntu-latest
@@ -12,4 +13,4 @@ jobs:
         with:
           project-name: kanban_broker
           column-name: backlog
-          issue-number: ${{ github.event.number }}
+          issue-number: ${{ github.event.issue.number }}
