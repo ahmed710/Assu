@@ -19,7 +19,4 @@ jobs:
       - name: github.event.action
         run: echo "${{github.event.action}}"
 
-      - name:  github.event.project_card
-        run: echo "${{github.event.project_card}}"
-
 
