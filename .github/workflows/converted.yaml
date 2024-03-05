@@ -1,22 +1,29 @@
-name: Add bugs to bugs project
+name: Create Kanban Card from Issue
 
 on:
   issues:
-    types:
-      - opened
+    types: [opened]
 
 jobs:
-  add-to-project:
-    name: Add issue to project
+  create-kanban-card:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Add issue to project board
-        env:
-          PROJECT_URL: https://api.github.com/projects/6
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install jq
+        run: sudo apt-get install jq -y
+
+      - name: Create Kanban Card
         run: |
-          curl -X POST \
+          ISSUE_TITLE=$(echo "${{ github.event.issue.title }}" | jq -R .)
+          ISSUE_BODY=$(echo "${{ github.event.issue.body }}" | jq -R .)
+          ISSUE_LABELS=$(echo "${{ toJson(github.event.issue.labels) }}" | jq -c '.[].name' | jq -s .)
+
+          curl \
+            -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.inertia-preview+json" \
-            -d '{"content_id":$ISSUE_NUMBER,"content_type":"Issue"}' \
-            $PROJECT_URL/columns/123/cards
+            -d "{\"content_id\":\"${{ github.event.issue.id }}\",\"content_type\":\"Issue\",\"note\":\"${ISSUE_TITLE}\\n${ISSUE_BODY}\",\"column_id\":COLUMN_ID,\"labels\":${ISSUE_LABELS}}" \
+            "https://api.github.com/projects/columns/cards"
