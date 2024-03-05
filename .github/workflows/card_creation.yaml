@@ -13,7 +13,7 @@ jobs:
           echo "Issue Number: ${{ github.event.issue.number }}"
           echo "Repository: ${{ github.repository }}"
           echo "Project Token: ${{ secrets.PROJECT_TOKEN }}"
-          echo "Project Location: ahmed710/Assu"
+          echo "Project Location: ahmed710/projects"
           echo "Project Name: kanban_broker"
           echo "Column Name: backlog"
 
@@ -24,5 +24,5 @@ jobs:
           column-name: backlog
           issue-number: ${{ github.event.issue.number }}
           token: ${{ secrets.PROJECT_TOKEN }}
-          project-location: ahmed710/Assu
+          project-location: ahmed710/projects
           repository: ahmed710/Assu
