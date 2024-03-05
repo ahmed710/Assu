@@ -1,0 +1,15 @@
+name: from issue to card
+
+on:
+  issues:
+    types: [opened]
+jobs:
+  createCard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create or Update Project Card
+        uses: peter-evans/create-or-update-project-card@v3
+        with:
+          project-name: kanban_broker
+          column-name: backlog
+          issue-number: ${{ github.event.number }}
